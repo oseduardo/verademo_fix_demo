@@ -17,12 +17,9 @@ java -jar ~/tools/veracode/pipeline-scan.jar -f ./target/verademo.war -jo true -
 cd ./src/main/java/com/veracode/verademo/commands
 veracode fix --results ~/Documents/VERACODE/DEMOs/FIX/verademo_v_2_1_1/app/results.json IgnoreCommand.java
 
-# -- Recompile
-javac -g source/SQLvulnerability.java
+# -- Recompile, going first of all to project root folder
+cd ~/Documents/VERACODE/DEMOs/FIX/verademo_v_2_1_1/app
+mvn clean package
 
-# -- Run SAST on new class file
-../veracode_CLI/veracode sast source/SQLvulnerability.class --emit-stack-dump --out results.json --prettyprint
-
-# -- Reset the demo (restore the source file), or if using git, discard all changes
-cp source/SQLvulnerability.java.backup source/SQLvulnerability.java
-
+# -- Run again Pipeline Scan
+java -jar ~/tools/veracode/pipeline-scan.jar -f ./target/verademo.war -jo true -esd true
