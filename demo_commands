@@ -1,0 +1,24 @@
+# -- TO RUN ALL COMANDS IT'S NECCESARY TO BE ON 'source' FOLDER
+# -- IT A PRE-REQUISITE TO HAVE A 'veracode_CLI' FOLDER AT THE SAME LEVEL OF LOCAL GIT REPO FOLDER, WITH THE TOOL INSTALLED
+
+# -- Clear cache
+../veracode_CLI/veracode clear
+
+# -- Compile
+javac -g source/SQLvulnerability.java
+
+# -- Run SAST (Pipeline Scan) - This command uses Veracode CLI option for Pipeline Scan
+../veracode_CLI/veracode sast source/SQLvulnerability.class --emit-stack-dump --out results.json --prettyprint
+
+# -- Run fix
+../veracode_CLI/veracode fix source/SQLvulnerability.java
+
+# -- Recompile
+javac -g source/SQLvulnerability.java
+
+# -- Run SAST on new class file
+../veracode_CLI/veracode sast source/SQLvulnerability.class --emit-stack-dump --out results.json --prettyprint
+
+# -- Reset the demo (restore the source file), or if using git, discard all changes
+cp source/SQLvulnerability.java.backup source/SQLvulnerability.java
+
